@@ -11,26 +11,27 @@ using UnityEngine;
 
 public class WebcamInput : MonoBehaviour
 {
-    public WebcamSettings settings;
-
-    public bool right, left, top, down;
-    public bool action;
-    public Vector2 aimPosition;
+   public PointF[] boardCorners;
 
     VideoCapture webcam;
     Dictionary markerDict;
     GridBoard gridBoard;
     DetectorParameters arucoParameters;
 
+    private void Awake()
+    {
+        boardCorners = new PointF[4];
+
+        markerDict = new Dictionary(Dictionary.PredefinedDictionaryName.Dict4X4_50);
+        gridBoard = new GridBoard(4, 4, 80, 30, markerDict);
+        arucoParameters = DetectorParameters.GetDefault();
+    }
+
     private void Start()
     {
         webcam = new VideoCapture(0);
         //webcam.FlipHorizontal = true;
         webcam.ImageGrabbed += HandleWebcam;
-
-        markerDict = new Dictionary(Dictionary.PredefinedDictionaryName.Dict4X4_50);
-        gridBoard = new GridBoard(4, 4, 80, 30, markerDict);
-        arucoParameters = DetectorParameters.GetDefault();
     }
 
     private void Update()
@@ -42,33 +43,69 @@ public class WebcamInput : MonoBehaviour
     {
         Image<Bgr, byte> origin = new Image<Bgr, byte>(webcam.Width, webcam.Height);
         if (webcam.IsOpened) webcam.Retrieve(origin);
-        Mat input = new Mat();
-        webcam.Retrieve(input);
 
-        // Adapatative threshold
-        Image<Gray, byte> grayscale = new Image<Gray, byte>(origin.Width, origin.Height);
-        CvInvoke.CvtColor(origin, grayscale, ColorConversion.Bgr2Gray);
-        CvInvoke.AdaptiveThreshold(grayscale, grayscale, 255, AdaptiveThresholdType.GaussianC, ThresholdType.BinaryInv, 11, 11);
+        Image<Bgr, byte> markers = origin.Clone();
+        Image<Bgr, byte> output = origin.Clone();
+        Image<Bgr, byte> transformed = new Image<Bgr, byte>(512, 512);
 
+        // Gather marker
         VectorOfInt ids = new VectorOfInt();
         VectorOfVectorOfPointF corners = new VectorOfVectorOfPointF();
-        ArucoInvoke.DetectMarkers(input, markerDict, corners, ids, arucoParameters);
+        ArucoInvoke.DetectMarkers(origin, markerDict, corners, ids, arucoParameters);
 
-        Image<Bgr, byte> output = origin.Clone();
-        if (ids.Size > 0)
+
+        for (int i = 0; i < ids.Size; i++)
         {
-            ArucoInvoke.DrawDetectedMarkers(output, corners, ids, new MCvScalar(0, 0, 255));
-            CvInvoke.Circle(output, new Point((int)corners[0][0].X, (int)corners[0][0].Y), 5, new MCvScalar(0,0,255), 2);
-            CvInvoke.Circle(output, new Point((int)corners[0][1].X, (int)corners[0][1].Y), 5, new MCvScalar(0,255,0), 2);
-            CvInvoke.Circle(output, new Point((int)corners[0][3].X, (int)corners[0][3].Y), 5, new MCvScalar(255,0,0), 2);
+            switch (ids[i])
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    boardCorners[ids[i]] = getCentroid(corners[i]);
+                    break;
+            }
         }
 
+        CvInvoke.Line(output, new Point((int)boardCorners[0].X, (int)boardCorners[0].Y), new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new MCvScalar(0, 0, 255), 2);
+        CvInvoke.Line(output, new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new Point((int)boardCorners[2].X, (int)boardCorners[2].Y), new MCvScalar(0, 0, 255), 2);
+        CvInvoke.Line(output, new Point((int)boardCorners[2].X, (int)boardCorners[2].Y), new Point((int)boardCorners[3].X, (int)boardCorners[3].Y), new MCvScalar(0, 0, 255), 2);
+        CvInvoke.Line(output, new Point((int)boardCorners[3].X, (int)boardCorners[3].Y), new Point((int)boardCorners[0].X, (int)boardCorners[0].Y), new MCvScalar(0, 0, 255), 2);
+        CvInvoke.Line(output, new Point((int)boardCorners[0].X, (int)boardCorners[0].Y), new Point((int)boardCorners[2].X, (int)boardCorners[2].Y), new MCvScalar(0, 0, 255), 2);
+        CvInvoke.Line(output, new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new Point((int)boardCorners[3].X, (int)boardCorners[3].Y), new MCvScalar(0, 0, 255), 2);
 
 
-        CvInvoke.Imshow("Webcam view", origin);
-        //CvInvoke.Imshow("Thershold view", grayscale);
+        PointF[] wrapCorners = new PointF[4];
+        wrapCorners[0] = new PointF(0, 0);
+        wrapCorners[1] = new PointF(512, 0);
+        wrapCorners[2] = new PointF(512, 512);
+        wrapCorners[3] = new PointF(0, 512);
+        Mat matrix = CvInvoke.GetPerspectiveTransform(boardCorners, wrapCorners);
+        CvInvoke.WarpPerspective(origin, transformed, matrix, new Size(512, 512));
+
+        ArucoInvoke.DetectMarkers(transformed, markerDict, corners, ids, arucoParameters);
+        if (ids.Size > 0)
+        {
+            ArucoInvoke.DrawDetectedMarkers(transformed, corners, ids, new MCvScalar(0, 0, 255));
+        }
+
+        // CvInvoke.Imshow("Markers view", markers);
         CvInvoke.Imshow("Output view", output);
+        CvInvoke.Imshow("Wrap view", transformed);
         // CvInvoke.Imshow("Shape detection view", shapeDetection);
+    }
+
+    private static PointF getCentroid(VectorOfPointF points)
+    {
+        float xMean = 0, yMean = 0;
+        for (int i = 0; i < points.Size; i++)
+        {
+            xMean += points[i].X;
+            yMean += points[i].Y;
+        }
+        xMean /= points.Size;
+        yMean /= points.Size;
+        return new PointF(xMean, yMean);
     }
 
     private void OnDestroy()
@@ -76,4 +113,5 @@ public class WebcamInput : MonoBehaviour
         webcam.Dispose();
         CvInvoke.DestroyAllWindows();
     }
+
 }
