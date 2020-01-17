@@ -34,7 +34,7 @@ public class Worker : MonoBehaviour
             else
             {
                 transform.position += moveVector;
-            transform.LookAt(target.transform.position);
+                transform.LookAt(target.transform.position);
             }
         }
     }

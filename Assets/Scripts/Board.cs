@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Drawing;
+using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public Vector2 boardSize = new Vector2(10,10);
+    public WebcamController webcamController;
+    public Vector2 boardSize = new Vector2(10, 10);
 
-    [HideInInspector] public Vector3 bottomLeft;
+    public Vector3 bottomLeft;
 
-    private void Awake() {
+    private void Awake()
+    {
         bottomLeft = transform.position - new Vector3(boardSize.x, 0, boardSize.y) / 2f;
     }
 
@@ -17,10 +20,17 @@ public class Board : MonoBehaviour
         return new Vector3(x, transform.position.y, z);
     }
 
+    public Vector3 WebcamToWorld(PointF point)
+    {
+        float x = bottomLeft.x + (point.X / 512.0f) * boardSize.x;
+        float z = bottomLeft.z + ((512.0f - point.Y) / 512.0f) * boardSize.y;
+        return new Vector3(x, transform.position.y, z);
+    }
+
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(0.2f, 0.3f, 1f, 0.5f);
-        Gizmos.DrawCube(transform.position, new Vector3(boardSize.x, 1, boardSize.y));
+        Gizmos.color = new UnityEngine.Color(0.2f, 0.3f, 1f, 0.5f);
+        Gizmos.DrawCube(transform.position + Vector3.up * 0.3f, new Vector3(boardSize.x, 0.6f, boardSize.y));
     }
 
 }
