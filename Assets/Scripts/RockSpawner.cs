@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockSpawner : MonoBehaviour
 {
-    public GameObject rockPrefab;
+    public Rock rockPrefab;
     public Board board;
     public float spawnDuration = 5f;
     public int maxNumOfRocks = 10;
