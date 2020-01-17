@@ -1100,7 +1100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e4bad02195575489151346dddaa11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockPrefab: {fileID: 0}
+  rockPrefab: {fileID: 114271946891857374, guid: 20257c6c71f91b54a8f891e6637a1d16,
+    type: 3}
   board: {fileID: 1792883787}
   spawnDuration: 3
   maxNumOfRocks: 10
@@ -1117,8 +1118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56f8ff6f04fcc3459b2c601ca590ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minecartPrefab: {fileID: 0}
-  board: {fileID: 0}
+  minecartPrefab: {fileID: 114531377766757882, guid: d939afd86af9bef4fb1954a4a02c771c,
+    type: 3}
+  board: {fileID: 1792883787}
   spawnSpeed: 0.2
 --- !u!1 &1847965825
 GameObject:
@@ -1371,72 +1373,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001289175}
   m_CullTransparentMesh: 0
---- !u!1001 &4953951471192656655
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883466118592540303, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7695403205232236247, guid: d939afd86af9bef4fb1954a4a02c771c,
-        type: 3}
-      propertyPath: m_Name
-      value: Minecart
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d939afd86af9bef4fb1954a4a02c771c, type: 3}
