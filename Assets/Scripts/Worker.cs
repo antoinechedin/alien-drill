@@ -11,6 +11,7 @@ public class Worker : MonoBehaviour
     public float miningSpeed = 1;
     float miningTimer;
     public int oreCarrying = 0;
+    public int maxOre = 6;
 
     WorkerState state;
     float distanceToTarget;
@@ -41,12 +42,18 @@ public class Worker : MonoBehaviour
 
             if (rock.currentOre > 0)
             {
-                miningTimer -= 1f / miningSpeed;
+                if (oreCarrying >= maxOre)
+                {
+                    state = WorkerState.Waiting;
+                    miningTimer = 0;
+                }
+                else miningTimer -= 1f / miningSpeed;
             }
             else
             {
-                miningTimer = 0;
                 state = WorkerState.Waiting;
+                miningTimer = 0;
+
                 nearRocks.Remove(rock);
                 Destroy(rock.gameObject);
             }
@@ -65,7 +72,7 @@ public class Worker : MonoBehaviour
                     TravelTo(target.transform.position);
                 }
 
-                if (nearRocks.Count > 0)
+                if (oreCarrying < maxOre && nearRocks.Count > 0)
                 {
                     state = WorkerState.Mining;
                     transform.LookAt(nearRocks[0].transform.position);
