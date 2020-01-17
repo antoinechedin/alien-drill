@@ -9,10 +9,12 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using UnityEngine;
 
-public class WebcamInput : MonoBehaviour
+public class WebcamController : MonoBehaviour
 {
-   public PointF[] boardCorners;
+    public PointF[] markerWrapPositions;
 
+    PointF[] markerPositions;
+    PointF[] boardCorners;
     VideoCapture webcam;
     Dictionary markerDict;
     GridBoard gridBoard;
@@ -21,6 +23,8 @@ public class WebcamInput : MonoBehaviour
     private void Awake()
     {
         boardCorners = new PointF[4];
+        markerPositions = new PointF[4];
+        markerWrapPositions = new PointF[4];
 
         markerDict = new Dictionary(Dictionary.PredefinedDictionaryName.Dict4X4_50);
         gridBoard = new GridBoard(4, 4, 80, 30, markerDict);
@@ -53,6 +57,13 @@ public class WebcamInput : MonoBehaviour
         VectorOfVectorOfPointF corners = new VectorOfVectorOfPointF();
         ArucoInvoke.DetectMarkers(origin, markerDict, corners, ids, arucoParameters);
 
+        PointF[] wrapCorners = new PointF[4];
+        wrapCorners[0] = new PointF(0, 0);
+        wrapCorners[1] = new PointF(512, 0);
+        wrapCorners[2] = new PointF(512, 512);
+        wrapCorners[3] = new PointF(0, 512);
+        Mat perspectiveMatrix = CvInvoke.GetPerspectiveTransform(boardCorners, wrapCorners);
+        CvInvoke.WarpPerspective(origin, transformed, perspectiveMatrix, new Size(512, 512));
 
         for (int i = 0; i < ids.Size; i++)
         {
@@ -64,8 +75,15 @@ public class WebcamInput : MonoBehaviour
                 case 3:
                     boardCorners[ids[i]] = getCentroid(corners[i]);
                     break;
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    markerPositions[ids[i] - 4] = getCentroid(corners[i]);
+                    break;
             }
         }
+        markerWrapPositions = CvInvoke.PerspectiveTransform(markerPositions, perspectiveMatrix);
 
         CvInvoke.Line(output, new Point((int)boardCorners[0].X, (int)boardCorners[0].Y), new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new MCvScalar(0, 0, 255), 2);
         CvInvoke.Line(output, new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new Point((int)boardCorners[2].X, (int)boardCorners[2].Y), new MCvScalar(0, 0, 255), 2);
@@ -74,15 +92,7 @@ public class WebcamInput : MonoBehaviour
         CvInvoke.Line(output, new Point((int)boardCorners[0].X, (int)boardCorners[0].Y), new Point((int)boardCorners[2].X, (int)boardCorners[2].Y), new MCvScalar(0, 0, 255), 2);
         CvInvoke.Line(output, new Point((int)boardCorners[1].X, (int)boardCorners[1].Y), new Point((int)boardCorners[3].X, (int)boardCorners[3].Y), new MCvScalar(0, 0, 255), 2);
 
-
-        PointF[] wrapCorners = new PointF[4];
-        wrapCorners[0] = new PointF(0, 0);
-        wrapCorners[1] = new PointF(512, 0);
-        wrapCorners[2] = new PointF(512, 512);
-        wrapCorners[3] = new PointF(0, 512);
-        Mat matrix = CvInvoke.GetPerspectiveTransform(boardCorners, wrapCorners);
-        CvInvoke.WarpPerspective(origin, transformed, matrix, new Size(512, 512));
-
+        // For graphic debug purpose
         ArucoInvoke.DetectMarkers(transformed, markerDict, corners, ids, arucoParameters);
         if (ids.Size > 0)
         {
