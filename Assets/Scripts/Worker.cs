@@ -8,34 +8,107 @@ public class Worker : MonoBehaviour
     public float moveSpeed = 5f;
     public float thresholdToTravel = 1f;
 
-    float distanceToTarget;
-    bool isTraveling;
+    public float miningSpeed = 1;
+    float miningTimer;
+    public int oreCarrying = 0;
 
-    private void Awake()
+    WorkerState state;
+    float distanceToTarget;
+    List<Rock> nearRocks = new List<Rock>();
+
+    private void TravelTo(Vector3 targetPosition)
     {
-        distanceToTarget = 0;
-        isTraveling = false;
+        Vector3 moveVector = (targetPosition - transform.position).normalized * moveSpeed * Time.deltaTime;
+        if (Vector3.Distance(transform.position, targetPosition) < moveVector.magnitude)
+        {
+            transform.position = targetPosition;
+            state = WorkerState.Waiting;
+        }
+        else
+        {
+            transform.position += moveVector;
+            transform.LookAt(targetPosition);
+        }
+    }
+
+    private void Mine(Rock rock)
+    {
+        miningTimer += Time.deltaTime;
+        if (miningTimer > 1f / miningSpeed)
+        {
+            oreCarrying++;
+            rock.currentOre--;
+
+            if (rock.currentOre > 0)
+            {
+                miningTimer -= 1f / miningSpeed;
+            }
+            else
+            {
+                miningTimer = 0;
+                state = WorkerState.Waiting;
+                nearRocks.Remove(rock);
+                Destroy(rock.gameObject);
+            }
+        }
     }
 
     private void Update()
     {
         distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-
-        if (isTraveling || distanceToTarget > thresholdToTravel)
+        switch (state)
         {
-            isTraveling = true;
-            Vector3 moveVector = (target.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
+            case WorkerState.Waiting:
+                if (distanceToTarget > thresholdToTravel)
+                {
+                    state = WorkerState.Traveling;
+                    TravelTo(target.transform.position);
+                }
 
-            if (distanceToTarget < moveVector.magnitude)
-            {
-                transform.position = target.transform.position;
-                isTraveling = false;
-            }
-            else
-            {
-                transform.position += moveVector;
-                transform.LookAt(target.transform.position);
-            }
+                if (nearRocks.Count > 0)
+                {
+                    state = WorkerState.Mining;
+                    transform.LookAt(nearRocks[0].transform.position);
+                    Mine(nearRocks[0]);
+                }
+                break;
+
+            case WorkerState.Traveling:
+                TravelTo(target.transform.position);
+                break;
+
+            case WorkerState.Mining:
+                if (distanceToTarget > thresholdToTravel)
+                {
+                    miningTimer = 0;
+                    state = WorkerState.Traveling;
+                    TravelTo(target.transform.position);
+
+                }
+                if (nearRocks.Count > 0)
+                {
+                    Mine(nearRocks[0]);
+                }
+                else state = WorkerState.Waiting;
+
+                break;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Rock") nearRocks.Add(other.GetComponent<Rock>());
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        nearRocks.Remove(other.GetComponent<Rock>());
+    }
+}
+
+public enum WorkerState
+{
+    Waiting,
+    Traveling,
+    Mining,
 }

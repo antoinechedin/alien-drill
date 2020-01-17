@@ -10,11 +10,11 @@ public class RockSpawner : MonoBehaviour
     public int maxNumOfRocks = 10;
 
     float timer;
-    List<GameObject> rocks;
+    [HideInInspector] public List<Rock> rocks;
 
     private void Awake()
     {
-        rocks = new List<GameObject>();
+        rocks = new List<Rock>();
         timer = 0f;
 
         if (board == null)
@@ -31,7 +31,8 @@ public class RockSpawner : MonoBehaviour
             if (timer > spawnDuration)
             {
                 timer -= spawnDuration;
-                GameObject rock = Instantiate(rockPrefab, board.RandomPosition(), Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform);
+                Rock rock = Instantiate(rockPrefab, board.RandomPosition(), Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
+                rock.rockSpawner = this;
                 rocks.Add(rock);
 
                 if (rocks.Count >= maxNumOfRocks) timer = 0f;
