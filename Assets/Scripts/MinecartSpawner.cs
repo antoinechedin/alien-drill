@@ -16,9 +16,9 @@ public class MinecartSpawner : MonoBehaviour
         {
             timer -= 1f / spawnSpeed;
             Vector3[] minecartPositions = board.RandomBorderPositions();
-            Minecart minecart = Instantiate(minecartPrefab, minecartPositions[0] + new Vector3(0, 1.6f, 0), Quaternion.identity, transform);
-            minecart.target = minecartPositions[1] + new Vector3(0, 1.6f, 0);
-            minecart.transform.LookAt(minecartPositions[1] + new Vector3(0, 1.6f, 0));
+            Minecart minecart = Instantiate(minecartPrefab, minecartPositions[0] + new Vector3(0, 1.52f, 0), Quaternion.identity, transform);
+            minecart.target = minecartPositions[1] + new Vector3(0, 1.52f, 0);
+            minecart.transform.LookAt(minecartPositions[1] + new Vector3(0, 1.52f, 0));
         }
     }
 }
