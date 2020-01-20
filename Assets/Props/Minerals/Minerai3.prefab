@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4565840285365333646}
   - component: {fileID: 6618025259087753989}
   - component: {fileID: 9118260431623727376}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Minerai3
-  m_TagString: Untagged
+  m_TagString: Rock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
