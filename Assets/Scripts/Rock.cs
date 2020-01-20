@@ -10,6 +10,7 @@ public class Rock : MonoBehaviour
 
     private void Awake() {
         currentOre = maxOre;
+        rockSpawner = FindObjectOfType<RockSpawner>();
     }
 
     private void OnDestroy() {

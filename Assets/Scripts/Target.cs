@@ -7,8 +7,10 @@ public class Target : MonoBehaviour
     [Range(0, 3)]
     public int id;
     public Board board;
+    public bool controlWithCam;
 
     private void Update() {
-        transform.position = board.WebcamToWorld(board.webcamController.markerWrapPositions[id]);
+        if (controlWithCam)
+            transform.position = board.WebcamToWorld(board.webcamController.markerWrapPositions[id]);
     }
 }
