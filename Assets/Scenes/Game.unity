@@ -222,7 +222,7 @@ PrefabInstance:
     - target: {fileID: 356696848960409812, guid: 53d2d5a6193cd13499bc2d319719674c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.52
+      value: 30.52
       objectReference: {fileID: 0}
     - target: {fileID: 356696848960409812, guid: 53d2d5a6193cd13499bc2d319719674c,
         type: 3}
@@ -630,6 +630,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 703087695}
     m_Modifications:
+    - target: {fileID: 114623925221914764, guid: a46a52247fc1dc54e8d05acf0685ec87,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7219402387585851123, guid: a46a52247fc1dc54e8d05acf0685ec87,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1497,7 +1502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &703087695
 Transform:
   m_ObjectHideFlags: 0
@@ -1528,7 +1533,7 @@ Transform:
   - {fileID: 905166865}
   - {fileID: 2037525499}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &707353202 stripped
 Transform:
@@ -1858,7 +1863,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1156267322
 GameObject:
@@ -2489,7 +2494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   webcamController: {fileID: 435983965}
-  boardSize: {x: 24, y: 24}
+  boardSize: {x: 20, y: 20}
   bottomLeft: {x: 0, y: 0, z: 0}
 --- !u!4 &1792883788
 Transform:
@@ -2540,9 +2545,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minecartPrefab: {fileID: 114083744683907986, guid: 53d2d5a6193cd13499bc2d319719674c,
     type: 3}
-  railPrefab: {fileID: 7219402387586204371, guid: a46a52247fc1dc54e8d05acf0685ec87,
+  railPrefab: {fileID: 114623925221914764, guid: a46a52247fc1dc54e8d05acf0685ec87,
     type: 3}
-  plankPrefab: {fileID: 6380984700815062950, guid: b4255e9d83a69464fb56801ca2c0c5ac,
+  plankPrefab: {fileID: 114757754911200076, guid: b4255e9d83a69464fb56801ca2c0c5ac,
     type: 3}
   board: {fileID: 1792883787}
   spawnSpeed: 0.2
@@ -3082,6 +3087,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 703087695}
     m_Modifications:
+    - target: {fileID: 114623925221914764, guid: a46a52247fc1dc54e8d05acf0685ec87,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7219402387585851123, guid: a46a52247fc1dc54e8d05acf0685ec87,
         type: 3}
       propertyPath: m_LocalPosition.x
