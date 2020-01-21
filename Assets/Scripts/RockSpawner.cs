@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockSpawner : MonoBehaviour
 {
-    public Rock rockPrefab;
+    public List<Rock> rockPrefab;
     public Board board;
     public float spawnDuration = 5f;
     public int maxNumOfRocks = 10;
@@ -31,7 +31,8 @@ public class RockSpawner : MonoBehaviour
             if (timer > spawnDuration)
             {
                 timer -= spawnDuration;
-                Rock rock = Instantiate(rockPrefab, board.RandomPosition(), Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
+                
+                Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], board.RandomPosition(), Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
                 rock.rockSpawner = this;
                 rocks.Add(rock);
 
