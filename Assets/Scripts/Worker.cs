@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Worker : MonoBehaviour
 {
+    [Range(0, 3)]
+    public int id;
     public GameObject target;
     public float moveSpeed = 5f;
     public float thresholdToTravel = 1f;
@@ -104,12 +106,24 @@ public class Worker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Rock") nearRocks.Add(other.GetComponent<Rock>());
+        if (other.tag == "Rock")
+        {
+            if (other.GetComponent<Rock>().id == this.id)
+            {
+                nearRocks.Add(other.GetComponent<Rock>());
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        nearRocks.Remove(other.GetComponent<Rock>());
+        if (other.tag == "Rock")
+        {
+            if (other.GetComponent<Rock>().id == this.id)
+            {
+                nearRocks.Remove(other.GetComponent<Rock>());
+            }
+        }
     }
 }
 
