@@ -5664,7 +5664,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  fallSpeed: 0.4
   target: {x: 0, y: 0, z: 0}
+  explosionPrefab: {fileID: 91607410902514922, guid: 99c4e4ea376d7634e932ecc2332e7e01,
+    type: 3}
+  listPlank: []
+  rail1: {fileID: 0}
+  rail2: {fileID: 0}
 --- !u!1 &356696848960769270
 GameObject:
   m_ObjectHideFlags: 0

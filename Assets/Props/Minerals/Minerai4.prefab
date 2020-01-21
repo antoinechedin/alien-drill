@@ -78,6 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxOre: 3
+  targetPos: {x: 0, y: 0, z: 0}
+  speedLerp: 0.5
   currentOre: 0
   rockSpawner: {fileID: 0}
 --- !u!1 &6924812840752196698
@@ -93,7 +95,6 @@ GameObject:
   - component: {fileID: 6924812840754459290}
   - component: {fileID: 6924812840759484314}
   - component: {fileID: 4100726189698883328}
-  - component: {fileID: 4917495402085283009}
   m_Layer: 0
   m_Name: Rock004
   m_TagString: Untagged
@@ -193,21 +194,6 @@ CapsuleCollider:
   m_Height: 2.2
   m_Direction: 2
   m_Center: {x: 0.12, y: 0, z: 0.57}
---- !u!114 &4917495402085283009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6924812840752196698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9104b03fb320782489d3c60cf5e5d974, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxOre: 3
-  currentOre: 0
-  rockSpawner: {fileID: 0}
 --- !u!1001 &506261629641099438
 PrefabInstance:
   m_ObjectHideFlags: 0

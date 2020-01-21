@@ -32,7 +32,9 @@ public class RockSpawner : MonoBehaviour
             {
                 timer -= spawnDuration;
                 
-                Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], board.RandomPosition(), Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
+                Vector3 pos = board.RandomPosition();
+                StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.15f, 0.1f));
+                Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], pos - Vector3.up * 5, Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
                 rock.rockSpawner = this;
                 rocks.Add(rock);
 

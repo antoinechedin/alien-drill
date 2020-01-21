@@ -8,6 +8,8 @@ public class Minecart : MonoBehaviour
     public float fallSpeed = 0.4f;
     public Vector3 target;
 
+    public GameObject explosionPrefab;
+
     public List<Plank> listPlank;
     public Rail rail1;
     public Rail rail2;
@@ -29,7 +31,12 @@ public class Minecart : MonoBehaviour
             rail2.goUnderground = true;
             Destroy(rail1.gameObject, 2f);
             Destroy(rail2.gameObject, 2f);
-            Destroy(gameObject);
+
+            StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.15f, 0.3f));
+            GameObject go = Instantiate(explosionPrefab, new Vector3(transform.position.x, 0, transform.position.z) , Quaternion.identity);
+            Destroy(go, 1f);
+
+            Destroy(gameObject, 1f);
         }
         else if (transform.position.y == 1.52f) TravelTo(target);
     }
