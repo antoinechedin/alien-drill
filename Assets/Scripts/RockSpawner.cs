@@ -9,8 +9,20 @@ public class RockSpawner : MonoBehaviour
     public float spawnDuration = 5f;
     public int maxNumOfRocks = 10;
 
+    public GameObject smokePrefab;
+
     float timer;
     [HideInInspector] public List<Rock> rocks;
+
+
+    private IEnumerator SpawnRock(float duration, Vector3 position)
+    {
+        yield return new WaitForSeconds(duration);
+
+        Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], position - Vector3.up * 5, Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
+        rock.rockSpawner = this;
+        rocks.Add(rock);
+    }
 
     private void Awake()
     {
@@ -33,10 +45,12 @@ public class RockSpawner : MonoBehaviour
                 timer -= spawnDuration;
                 
                 Vector3 pos = board.RandomPosition();
+
+                GameObject go = Instantiate(smokePrefab, pos - Vector3.up * 5, Quaternion.identity);
+                Destroy(go, 1f);
+
                 StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.15f, 0.1f));
-                Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], pos - Vector3.up * 5, Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
-                rock.rockSpawner = this;
-                rocks.Add(rock);
+                StartCoroutine(SpawnRock(0.2f, pos));
 
                 if (rocks.Count >= maxNumOfRocks) timer = 0f;
             }

@@ -2574,6 +2574,8 @@ MonoBehaviour:
   board: {fileID: 1792883787}
   spawnDuration: 3
   maxNumOfRocks: 10
+  smokePrefab: {fileID: 7451461214470505500, guid: aff77f824b5166d4b9e7f83567b9e0d0,
+    type: 3}
   rocks: []
 --- !u!114 &1792883790
 MonoBehaviour:
