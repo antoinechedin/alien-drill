@@ -46,7 +46,8 @@ public class RockSpawner : MonoBehaviour
                 
                 Vector3 pos = board.RandomPosition();
 
-                GameObject go = Instantiate(smokePrefab, pos - Vector3.up * 5, Quaternion.identity);
+                GameObject go = Instantiate(smokePrefab, pos - Vector3.up * 4, Quaternion.identity);
+                go.transform.SetParent(this.transform);
                 Destroy(go, 1f);
 
                 StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.15f, 0.1f));

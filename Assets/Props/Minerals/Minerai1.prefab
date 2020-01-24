@@ -362,6 +362,8 @@ MonoBehaviour:
   maxOre: 3
   targetPos: {x: 0, y: 0, z: 0}
   speedLerp: 0.5
+  soundOut: {fileID: 4644754637268846524, guid: 42bb49f49f6ca7242b4dd45d7482be6f,
+    type: 3}
   currentOre: 0
   rockSpawner: {fileID: 0}
 --- !u!1 &5098072937557404605

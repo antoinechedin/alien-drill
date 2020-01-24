@@ -9,19 +9,36 @@ public class Minecart : MonoBehaviour
     public Vector3 target;
 
     public GameObject explosionPrefab;
+    public GameObject impact;
+    public GameObject rollingPrefab;
+
+    private GameObject rollingSound;
 
     public List<Plank> listPlank;
     public Rail rail1;
     public Rail rail2;
 
+    private bool explode = false;
 
     private void Update()
     {
-        if (transform.position.y < 1.52f) transform.position = new Vector3(transform.position.x, 1.52f, transform.position.z);
+        if (transform.position.y < 1.52f)
+        {
+            GameObject go = Instantiate(rollingPrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+            rollingSound = go;
+            go.transform.SetParent(this.transform);
+
+            GameObject go2 = Instantiate(impact, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+            Destroy(go2, 2f);
+            go2.transform.SetParent(this.transform);
+            transform.position = new Vector3(transform.position.x, 1.52f, transform.position.z);
+        }
         if (transform.position.y > 1.52f) transform.position -= fallSpeed * Vector3.up;
 
-        if (transform.position == target)
+        if (transform.position == target && !explode)
         {
+            explode = true;
+
             foreach (Plank p in listPlank)
             {
                 p.goUnderground = true;
@@ -36,7 +53,9 @@ public class Minecart : MonoBehaviour
             GameObject go = Instantiate(explosionPrefab, new Vector3(transform.position.x, 0, transform.position.z) , Quaternion.identity);
             Destroy(go, 1f);
 
-            Destroy(gameObject, 1f);
+            Destroy(rollingSound);
+
+            Destroy(gameObject, 0.55f);
         }
         else if (transform.position.y == 1.52f) TravelTo(target);
     }
