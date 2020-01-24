@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Worker : MonoBehaviour
 {
+    // 0 Red
+    // 1 Blue
+    // 2 Green
+    // 3 Orange
+
     public GameObject target;
     public float moveSpeed = 5f;
     public float thresholdToTravel = 1f;
+
+    public GameObject miningPrefab;
+    private GameObject miningSound;
 
     public float miningSpeed = 1;
     float miningTimer;
@@ -54,6 +62,7 @@ public class Worker : MonoBehaviour
                 state = WorkerState.Waiting;
                 miningTimer = 0;
 
+                Destroy(miningSound, 0.5f);
                 nearRocks.Remove(rock);
                 Destroy(rock.gameObject);
             }
@@ -66,6 +75,15 @@ public class Worker : MonoBehaviour
         switch (state)
         {
             case WorkerState.Waiting:
+                if (GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().Stop();
+                }
+
+                if (miningSound != null)
+                {
+                    Destroy(miningSound, 0.5f);
+                }
                 GetComponent<Animator>().SetBool("walking", false);
                 GetComponent<Animator>().SetBool("idle", true);
                 GetComponent<Animator>().SetBool("mining", false);
@@ -84,6 +102,15 @@ public class Worker : MonoBehaviour
                 break;
 
             case WorkerState.Traveling:
+                if (!GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().Play();
+                }
+
+                if (miningSound != null)
+                {
+                    Destroy(miningSound, 0.5f);
+                }
                 GetComponent<Animator>().SetBool("walking", true);
                 GetComponent<Animator>().SetBool("idle", false);
                 GetComponent<Animator>().SetBool("mining", false);
@@ -91,6 +118,16 @@ public class Worker : MonoBehaviour
                 break;
 
             case WorkerState.Mining:
+                if (GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().Stop();
+                }
+
+                if (miningSound == null)
+                {
+                    GameObject go = Instantiate(miningPrefab, transform);
+                    miningSound = go;
+                }
                 GetComponent<Animator>().SetBool("walking", false);
                 GetComponent<Animator>().SetBool("idle", false);
                 GetComponent<Animator>().SetBool("mining", true);
@@ -113,7 +150,7 @@ public class Worker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Rock") nearRocks.Add(other.GetComponent<Rock>());
+        if (other.CompareTag("Rock")) nearRocks.Add(other.GetComponent<Rock>());
     }
 
     private void OnTriggerExit(Collider other)

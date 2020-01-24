@@ -73,4 +73,30 @@ public class Minecart : MonoBehaviour
             transform.LookAt(targetPosition);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            explode = true;
+
+            foreach (Plank p in listPlank)
+            {
+                p.goUnderground = true;
+                Destroy(p.gameObject, 2f);
+            }
+            rail1.goUnderground = true;
+            rail2.goUnderground = true;
+            Destroy(rail1.gameObject, 2f);
+            Destroy(rail2.gameObject, 2f);
+
+            //StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.05f, 0.3f));
+            GameObject go = Instantiate(explosionPrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+            Destroy(go, 1f);
+
+            Destroy(rollingSound);
+
+            Destroy(gameObject, 0.55f);
+        }
+    }
 }

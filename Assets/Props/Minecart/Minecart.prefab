@@ -5609,6 +5609,7 @@ GameObject:
   - component: {fileID: 356696848960409812}
   - component: {fileID: 356696848953490994}
   - component: {fileID: 114083744683907986}
+  - component: {fileID: 5452679451074433997}
   m_Layer: 0
   m_Name: Minecart
   m_TagString: Untagged
@@ -5674,6 +5675,19 @@ MonoBehaviour:
   listPlank: []
   rail1: {fileID: 0}
   rail2: {fileID: 0}
+--- !u!65 &5452679451074433997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356696848960769268}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1.69}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &356696848960769270
 GameObject:
   m_ObjectHideFlags: 0
