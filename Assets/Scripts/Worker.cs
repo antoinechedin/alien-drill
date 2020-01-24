@@ -66,6 +66,9 @@ public class Worker : MonoBehaviour
         switch (state)
         {
             case WorkerState.Waiting:
+                GetComponent<Animator>().SetBool("walking", false);
+                GetComponent<Animator>().SetBool("idle", true);
+                GetComponent<Animator>().SetBool("mining", false);
                 if (distanceToTarget > thresholdToTravel)
                 {
                     state = WorkerState.Traveling;
@@ -75,16 +78,22 @@ public class Worker : MonoBehaviour
                 if (oreCarrying < maxOre && nearRocks.Count > 0)
                 {
                     state = WorkerState.Mining;
-                    transform.LookAt(nearRocks[0].transform.position);
+                    transform.LookAt(new Vector3(nearRocks[0].transform.position.x, 0, nearRocks[0].transform.position.z));
                     Mine(nearRocks[0]);
                 }
                 break;
 
             case WorkerState.Traveling:
+                GetComponent<Animator>().SetBool("walking", true);
+                GetComponent<Animator>().SetBool("idle", false);
+                GetComponent<Animator>().SetBool("mining", false);
                 TravelTo(target.transform.position);
                 break;
 
             case WorkerState.Mining:
+                GetComponent<Animator>().SetBool("walking", false);
+                GetComponent<Animator>().SetBool("idle", false);
+                GetComponent<Animator>().SetBool("mining", true);
                 if (distanceToTarget > thresholdToTravel)
                 {
                     miningTimer = 0;
