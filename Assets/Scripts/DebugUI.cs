@@ -6,19 +6,20 @@ using UnityEngine.UI;
 
 public class DebugUI : MonoBehaviour
 {
-    public Worker player;
-    public House house;
+    public List<Worker> player;
+    public List<House> house;
+    public List<Text> playerText;
+    public List<Text> houseText;
+    public List<string> colorString;
 
-    Text playerText;
-    Text houseText;
-
-    private void Awake() {
-        playerText = transform.GetChild(0).GetComponent<Text>();
-        houseText = transform.GetChild(1).GetComponent<Text>();
-    }
-
-    private void Update() {
-        if (player != null) playerText.text = "Red ore: " + player.oreCarrying + "/" + player.maxOre;
-        if (house != null) houseText.text = "House ore: " + house.ore;
+    private void Update()
+    {
+        for(int i = 0; i < player.Count; i++)
+        {
+            if (player[i] != null)
+                playerText[i].text = colorString[i] + " player ore: " + player[i].oreCarrying + "/" + player[i].maxOre;
+            if (house[i] != null)
+                houseText[i].text = colorString[i] + " house ore: " + house[i].ore;
+        }  
     }
 }

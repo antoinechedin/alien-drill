@@ -12,6 +12,7 @@ public class Worker : MonoBehaviour
     public GameObject target;
     public float moveSpeed = 5f;
     public float thresholdToTravel = 1f;
+    public string myColor;
 
     public GameObject miningPrefab;
     private GameObject miningSound;
@@ -150,7 +151,7 @@ public class Worker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Rock")) nearRocks.Add(other.GetComponent<Rock>());
+        if (other.CompareTag(myColor)) nearRocks.Add(other.GetComponent<Rock>());
     }
 
     private void OnTriggerExit(Collider other)
