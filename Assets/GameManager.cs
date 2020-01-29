@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         {
             dwarfInstances[i].SetActive(false);
         }
+        dwarfInstances[0].GetComponent<Worker>().enabled = false;
         rockSpawner = FindObjectOfType<RockSpawner>();
         minecartSpawner = FindObjectOfType<MinecartSpawner>();
         rockSpawner.enabled = false;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
             started = true;
             startTime = Time.time;
             StartText.SetActive(false);
+            dwarfInstances[0].GetComponent<Worker>().enabled = true;
 
             rockSpawner.enabled = true;
             minecartSpawner.enabled = true;

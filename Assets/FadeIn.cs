@@ -30,7 +30,7 @@ public class FadeIn : MonoBehaviour
 
     IEnumerator LoadYourAsyncScene()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scene2");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Game");
 
         while (!asyncLoad.isDone)
         {
