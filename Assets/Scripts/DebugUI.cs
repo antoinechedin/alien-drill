@@ -17,9 +17,16 @@ public class DebugUI : MonoBehaviour
         for(int i = 0; i < player.Count; i++)
         {
             if (player[i] != null)
-                playerText[i].text = colorString[i] + " player ore: " + player[i].oreCarrying + "/" + player[i].maxOre;
+                if (player[i].gameObject.activeSelf)
+                    playerText[i].text = player[i].oreCarrying + "/" + player[i].maxOre;
+                else
+                    playerText[i].text = "";
             if (house[i] != null)
-                houseText[i].text = colorString[i] + " house ore: " + house[i].ore;
+                if (player[i].gameObject.activeSelf)
+                    houseText[i].text = "Ore : "+house[i].ore;
+                else
+                    houseText[i].text = "";
+
         }  
     }
 }

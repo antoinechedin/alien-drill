@@ -49,7 +49,7 @@ public class Minecart : MonoBehaviour
             Destroy(rail1.gameObject, 2f);
             Destroy(rail2.gameObject, 2f);
 
-            //StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.05f, 0.3f));
+            StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.5f, 0.3f));
             GameObject go = Instantiate(explosionPrefab, new Vector3(transform.position.x, 0, transform.position.z) , Quaternion.identity);
             Destroy(go, 1f);
 
@@ -78,6 +78,7 @@ public class Minecart : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            FindObjectOfType<GameManager>().end = true;
             explode = true;
 
             foreach (Plank p in listPlank)
@@ -90,7 +91,7 @@ public class Minecart : MonoBehaviour
             Destroy(rail1.gameObject, 2f);
             Destroy(rail2.gameObject, 2f);
 
-            //StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.05f, 0.3f));
+            StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.5f, 0.3f));
             GameObject go = Instantiate(explosionPrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
             Destroy(go, 1f);
 

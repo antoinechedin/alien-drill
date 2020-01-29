@@ -8,6 +8,7 @@ public class RockSpawner : MonoBehaviour
     public Board board;
     public float spawnDuration = 5f;
     public int maxNumOfRocks = 10;
+    public int rockAvailable = 1;
 
     public GameObject smokePrefab;
 
@@ -19,7 +20,7 @@ public class RockSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
 
-        Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, 4)], position - Vector3.up * 5, Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
+        Rock rock = Instantiate(rockPrefab[(int)Random.Range(0, rockAvailable)], position - Vector3.up * 5, Quaternion.Euler(0, Random.Range(0f, 360), 0f), transform).GetComponent<Rock>();
         rock.rockSpawner = this;
         rocks.Add(rock);
     }
@@ -50,7 +51,7 @@ public class RockSpawner : MonoBehaviour
                 go.transform.SetParent(this.transform);
                 Destroy(go, 1f);
 
-                StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.15f, 0.1f));
+                //StartCoroutine(FindObjectOfType<CameraShake>().Shake(0.5f, 0.1f));
                 StartCoroutine(SpawnRock(0.2f, pos));
 
                 if (rocks.Count >= maxNumOfRocks) timer = 0f;
